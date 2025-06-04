@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import pickle
+import joblib  # Changed from pickle to joblib for better compatibility
 import os
 from sklearn.preprocessing import StandardScaler
 import plotly.express as px
@@ -131,24 +131,108 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     try:
-        with open('diabetes_rf_model.pkl', 'rb') as f:
-            model = pickle.load(f)
-        with open('diabetes_scaler.pkl', 'rb') as f:
-            scaler = pickle.load(f)
+        model = joblib.load('diabetes_rf_model.pkl')
+        scaler = joblib.load('diabetes_scaler.pkl')
         return model, scaler
     except FileNotFoundError:
-        st.error("Model files not found. Please run train_model.py first to train the model.")
+        st.error("Model files not found. Training a new model...")
+        return train_and_save_model()
+    except (ModuleNotFoundError, ImportError, ValueError) as e:
+        st.warning(f"Model compatibility issue detected. Training a new model...")
+        return train_and_save_model()
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}. Training a new model...")
+        return train_and_save_model()
+
+# Train and save model function
+def train_and_save_model():
+    """Train a new model and save it"""
+    try:
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.model_selection import train_test_split
+        import joblib
+        
+        # Load dataset
+        df = load_dataset()
+        if df is None:
+            st.error("Cannot train model: Dataset not available")
+            return None, None
+        
+        # Prepare data
+        X = df.drop('Outcome', axis=1)
+        y = df['Outcome']
+        
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        
+        # Scale features
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        
+        # Train model
+        model = RandomForestClassifier(n_estimators=100, random_state=42)
+        model.fit(X_train_scaled, y_train)
+        
+        # Save model and scaler using joblib for better compatibility
+        joblib.dump(model, 'diabetes_rf_model.pkl')
+        joblib.dump(scaler, 'diabetes_scaler.pkl')
+        
+        st.success("Model trained and saved successfully!")
+        return model, scaler
+        
+    except Exception as e:
+        st.error(f"Error training model: {str(e)}")
         return None, None
 
 # Load dataset for analysis
 @st.cache_data
 def load_dataset():
     try:
-        df = pd.read_csv(r"dataset/diabetes.csv")
-        return df
-    except FileNotFoundError:
-        st.error("Dataset not found. Please check the file path.")
-        return None
+        # Try multiple possible paths for the dataset
+        possible_paths = [
+            "dataset/diabetes.csv",
+            "diabetes.csv",
+            "akhir/dataset/diabetes.csv",
+            "../Project-Akhir/akhir/dataset/diabetes.csv"
+        ]
+        
+        for path in possible_paths:
+            try:
+                df = pd.read_csv(path)
+                st.success(f"Dataset loaded from: {path}")
+                return df
+            except FileNotFoundError:
+                continue
+        
+        # If no dataset found, create a sample dataset
+        st.warning("Dataset not found. Creating sample dataset for demonstration...")
+        return create_sample_dataset()
+        
+    except Exception as e:
+        st.error(f"Error loading dataset: {str(e)}")
+        return create_sample_dataset()
+
+def create_sample_dataset():
+    """Create a sample dataset for demonstration purposes"""
+    np.random.seed(42)
+    n_samples = 768
+    
+    data = {
+        'Pregnancies': np.random.randint(0, 17, n_samples),
+        'Glucose': np.random.normal(120, 30, n_samples).clip(0, 200),
+        'BloodPressure': np.random.normal(80, 15, n_samples).clip(0, 122),
+        'SkinThickness': np.random.normal(25, 8, n_samples).clip(0, 100),
+        'Insulin': np.random.normal(80, 40, n_samples).clip(0, 846),
+        'BMI': np.random.normal(32, 7, n_samples).clip(0, 67),
+        'DiabetesPedigreeFunction': np.random.uniform(0.078, 2.42, n_samples),
+        'Age': np.random.randint(21, 81, n_samples),
+        'Outcome': np.random.choice([0, 1], n_samples, p=[0.65, 0.35])
+    }
+    
+    df = pd.DataFrame(data)
+    st.info("Using sample dataset for demonstration. For production use, please provide the actual diabetes.csv file.")
+    return df
 
 def main():
     # Header with animation
