@@ -10,6 +10,172 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import time
 
+# Language configuration
+LANGUAGES = {
+    "🇺🇸 English": "en",
+    "🇮🇩 Bahasa Indonesia": "id"
+}
+
+# Multi-language text content
+TEXTS = {
+    "en": {
+        "app_title": "🩺 Advanced Diabetes Prediction System",
+        "app_subtitle": "Powered by Machine Learning & AI Technology",
+        "navigation": "🧭 Navigation",
+        "language": "🌐 Language",
+        "home": "🏠 Home",
+        "data_analysis": "📊 Data Analysis",
+        "prediction": "🔮 Prediction",
+        "about": "ℹ️ About",
+        "quick_stats": "📈 Quick Stats",
+        "total_samples": "Total Samples",
+        "features": "Features",
+        "diabetes_rate": "Diabetes Rate",
+        "model_info": "🎯 Model Info",
+        "algorithm": "Algorithm",
+        "accuracy": "Accuracy",
+        "medical_indicators": "medical indicators",
+        "welcome_title": "🎯 Welcome to Advanced Diabetes Prediction",
+        "welcome_text": "Harness the power of artificial intelligence to assess diabetes risk with precision and confidence. Our advanced machine learning model analyzes multiple health indicators to provide accurate predictions.",
+        "dataset_overview": "📊 Real-time Dataset Overview",
+        "patient_records": "Patient Records",
+        "health_indicators": "Health Indicators",
+        "positive_cases": "Positive Cases",
+        "negative_cases": "Negative Cases",
+        "healthy_cases": "✅ Healthy Cases",
+        "diabetes_cases": "⚠️ Diabetes Cases",
+        "interactive_overview": "📈 Interactive Data Overview",
+        "diabetes_distribution": "Diabetes Distribution",
+        "no_diabetes": "No Diabetes",
+        "diabetes": "Diabetes",
+        "age_distribution": "Age Distribution by Diabetes Status",
+        "understanding_problem": "🎯 Understanding the Problem",
+        "healthcare_challenge": "🏥 Healthcare Challenge",
+        "healthcare_challenge_text": "Diabetes affects millions worldwide and early detection is crucial for effective treatment. Traditional diagnosis methods can be expensive and time-consuming, creating barriers to timely healthcare access.",
+        "ai_solution": "🤖 AI Solution",
+        "ai_solution_text": "Our machine learning model provides instant risk assessment using easily obtainable health metrics, enabling proactive healthcare decisions and early intervention strategies.",
+        "health_indicators_analyze": "🔬 Health Indicators We Analyze",
+        "risk_assessment": "🔮 Advanced Diabetes Risk Assessment",
+        "how_it_works": "🎯 How It Works",
+        "how_it_works_text": "Our AI model analyzes 8 key health indicators to assess diabetes risk. Simply enter your health information below to get an instant risk assessment with personalized recommendations.",
+        "enter_health_info": "📝 Enter Health Information",
+        "personal_info": "Personal Information",
+        "medical_info": "Medical Information",
+        "age": "Age (years)",
+        "pregnancies": "Number of Pregnancies",
+        "glucose": "Glucose Level (mg/dL)",
+        "blood_pressure": "Blood Pressure (mmHg)",
+        "skin_thickness": "Skin Thickness (mm)",
+        "insulin": "Insulin Level (μU/mL)",
+        "bmi": "BMI (kg/m²)",
+        "diabetes_pedigree": "Diabetes Pedigree Function",
+        "predict_button": "🔮 Predict Diabetes Risk",
+        "prediction_result": "🎯 Prediction Result",
+        "risk_category": "Risk Category",
+        "confidence": "Confidence",
+        "high_risk": "HIGH RISK",
+        "low_risk": "LOW RISK",
+        "recommendations": "💡 Recommendations",
+        "feature_analysis": "📊 Feature Analysis",
+        "about_title": "ℹ️ About This Application",
+        "about_description": "This diabetes prediction application uses advanced machine learning algorithms to assess diabetes risk based on various health indicators.",
+        "features_title": "✨ Key Features",
+        "model_details": "🤖 Model Details",
+        "disclaimer": "⚠️ Medical Disclaimer",
+        "disclaimer_text": "This tool is for educational and informational purposes only. It should not replace professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare providers for medical decisions."
+    },
+    "id": {
+        "app_title": "🩺 Sistem Prediksi Diabetes Canggih",
+        "app_subtitle": "Didukung oleh Teknologi Machine Learning & AI",
+        "navigation": "🧭 Navigasi",
+        "language": "🌐 Bahasa",
+        "home": "🏠 Beranda",
+        "data_analysis": "📊 Analisis Data",
+        "prediction": "🔮 Prediksi",
+        "about": "ℹ️ Tentang",
+        "quick_stats": "📈 Statistik Cepat",
+        "total_samples": "Total Sampel",
+        "features": "Fitur",
+        "diabetes_rate": "Tingkat Diabetes",
+        "model_info": "🎯 Info Model",
+        "algorithm": "Algoritma",
+        "accuracy": "Akurasi",
+        "medical_indicators": "indikator medis",
+        "welcome_title": "🎯 Selamat Datang di Prediksi Diabetes Canggih",
+        "welcome_text": "Manfaatkan kekuatan kecerdasan buatan untuk menilai risiko diabetes dengan presisi dan kepercayaan diri. Model machine learning canggih kami menganalisis berbagai indikator kesehatan untuk memberikan prediksi yang akurat.",
+        "dataset_overview": "📊 Tinjauan Dataset Real-time",
+        "patient_records": "Rekam Pasien",
+        "health_indicators": "Indikator Kesehatan",
+        "positive_cases": "Kasus Positif",
+        "negative_cases": "Kasus Negatif",
+        "healthy_cases": "✅ Kasus Sehat",
+        "diabetes_cases": "⚠️ Kasus Diabetes",
+        "interactive_overview": "📈 Tinjauan Interaktif Data",
+        "diabetes_distribution": "Distribusi Diabetes",
+        "no_diabetes": "Tidak Diabetes",
+        "diabetes": "Diabetes",
+        "age_distribution": "Distribusi Usia berdasarkan Status Diabetes",
+        "understanding_problem": "🎯 Memahami Masalah",
+        "healthcare_challenge": "🏥 Tantangan Kesehatan",
+        "healthcare_challenge_text": "Diabetes mempengaruhi jutaan orang di seluruh dunia dan deteksi dini sangat penting untuk pengobatan yang efektif. Metode diagnosis tradisional bisa mahal dan memakan waktu, menciptakan hambatan untuk akses kesehatan yang tepat waktu.",
+        "ai_solution": "🤖 Solusi AI",
+        "ai_solution_text": "Model machine learning kami menyediakan penilaian risiko instan menggunakan metrik kesehatan yang mudah diperoleh, memungkinkan keputusan kesehatan proaktif dan strategi intervensi dini.",
+        "health_indicators_analyze": "🔬 Indikator Kesehatan yang Kami Analisis",
+        "risk_assessment": "🔮 Penilaian Risiko Diabetes Canggih",
+        "how_it_works": "🎯 Cara Kerja",
+        "how_it_works_text": "Model AI kami menganalisis 8 indikator kesehatan kunci untuk menilai risiko diabetes. Cukup masukkan informasi kesehatan Anda di bawah ini untuk mendapatkan penilaian risiko instan dengan rekomendasi yang dipersonalisasi.",
+        "enter_health_info": "📝 Masukkan Informasi Kesehatan",
+        "personal_info": "Informasi Pribadi",
+        "medical_info": "Informasi Medis",
+        "age": "Usia (tahun)",
+        "pregnancies": "Jumlah Kehamilan",
+        "glucose": "Tingkat Glukosa (mg/dL)",
+        "blood_pressure": "Tekanan Darah (mmHg)",
+        "skin_thickness": "Ketebalan Kulit (mm)",
+        "insulin": "Tingkat Insulin (μU/mL)",
+        "bmi": "BMI (kg/m²)",
+        "diabetes_pedigree": "Fungsi Silsilah Diabetes",
+        "predict_button": "🔮 Prediksi Risiko Diabetes",
+        "prediction_result": "🎯 Hasil Prediksi",
+        "risk_category": "Kategori Risiko",
+        "confidence": "Tingkat Kepercayaan",
+        "high_risk": "RISIKO TINGGI",
+        "low_risk": "RISIKO RENDAH",
+        "recommendations": "💡 Rekomendasi",
+        "feature_analysis": "📊 Analisis Fitur",
+        "about_title": "ℹ️ Tentang Aplikasi Ini",
+        "about_description": "Aplikasi prediksi diabetes ini menggunakan algoritma machine learning canggih untuk menilai risiko diabetes berdasarkan berbagai indikator kesehatan.",
+        "features_title": "✨ Fitur Utama",
+        "model_details": "🤖 Detail Model",
+        "disclaimer": "⚠️ Penafian Medis",
+        "disclaimer_text": "Alat ini hanya untuk tujuan edukasi dan informasi. Tidak boleh menggantikan nasihat medis profesional, diagnosis, atau pengobatan. Selalu konsultasikan dengan penyedia layanan kesehatan yang berkualitas untuk keputusan medis."
+    }
+}
+
+# Feature descriptions in multiple languages
+FEATURE_INFO = {
+    "en": {
+        "Pregnancies": "Number of pregnancies (risk factor for gestational diabetes)",
+        "Glucose": "Blood glucose level (primary diabetes indicator)", 
+        "BloodPressure": "Diastolic blood pressure (cardiovascular health)",
+        "SkinThickness": "Skin fold thickness (body fat indicator)",
+        "Insulin": "Insulin level (hormone regulation)",
+        "BMI": "Body Mass Index (weight-to-height ratio)",
+        "DiabetesPedigreeFunction": "Genetic predisposition (family history)",
+        "Age": "Patient age (risk increases with age)"
+    },
+    "id": {
+        "Pregnancies": "Jumlah kehamilan (faktor risiko diabetes gestasional)",
+        "Glucose": "Tingkat glukosa darah (indikator utama diabetes)", 
+        "BloodPressure": "Tekanan darah diastolik (kesehatan kardiovaskular)",
+        "SkinThickness": "Ketebalan lipatan kulit (indikator lemak tubuh)",
+        "Insulin": "Tingkat insulin (regulasi hormon)",
+        "BMI": "Indeks Massa Tubuh (rasio berat-tinggi)",
+        "DiabetesPedigreeFunction": "Predisposisi genetik (riwayat keluarga)",
+        "Age": "Usia pasien (risiko meningkat dengan usia)"
+    }
+}
+
 # Page configuration
 st.set_page_config(
     page_title="Diabetes Prediction App",
@@ -144,6 +310,19 @@ def load_model():
         # Error loading model - training new model (removed persistent notification)
         return train_and_save_model()
 
+# Language helper function
+def get_text(key, lang="en"):
+    """Get text in specified language"""
+    return TEXTS.get(lang, TEXTS["en"]).get(key, key)
+
+def get_feature_info(lang="en"):
+    """Get feature information in specified language"""
+    return FEATURE_INFO.get(lang, FEATURE_INFO["en"])
+
+# Initialize session state for language
+if 'language' not in st.session_state:
+    st.session_state.language = 'en'
+
 # Train and save model function
 def train_and_save_model():
     """Train a new model and save it"""
@@ -232,31 +411,55 @@ def create_sample_dataset():
     return df
 
 def main():
+    lang = st.session_state.language
+    
+    st.sidebar.markdown(f"""
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                padding: 1rem; border-radius: 10px; color: white; text-align: center; margin-bottom: 1rem;">
+        <h2>{get_text('navigation', lang)}</h2>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Language selector in sidebar
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(f"### {get_text('language', st.session_state.language)}")
+    
+    # Language selection
+    selected_language = st.sidebar.selectbox(
+        "",
+        list(LANGUAGES.keys()),
+        index=0 if st.session_state.language == 'en' else 1,
+        key="language_selector"
+    )
+    
+    # Update session state if language changed
+    new_lang = LANGUAGES[selected_language]
+    if new_lang != st.session_state.language:
+        st.session_state.language = new_lang
+        st.rerun()
+    
+    # Get current language
+    
     # Header with animation
-    st.markdown("""
+    st.markdown(f"""
     <div class="header-style animated-text">
-        <h1>🩺 Advanced Diabetes Prediction System</h1>
-        <p>Powered by Machine Learning & AI Technology</p>
+        <h1>{get_text('app_title', lang)}</h1>
+        <p>{get_text('app_subtitle', lang)}</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Sidebar with enhanced styling
-    st.sidebar.markdown("""
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                padding: 1rem; border-radius: 10px; color: white; text-align: center; margin-bottom: 1rem;">
-        <h2>🧭 Navigation</h2>
-    </div>
-    """, unsafe_allow_html=True)
+    
     
     # Enhanced navigation with icons
     page_options = {
-        "🏠 Home": "Home",
-        "📊 Data Analysis": "Data Analysis", 
-        "🔮 Prediction": "Prediction",        "ℹ️ About": "About"
+        get_text('home', lang): "Home",
+        get_text('prediction', lang): "Prediction",
+        get_text('about', lang): "About"
     }
     
     selected_page = st.sidebar.selectbox(
-        "Choose a page:", 
+        "",
         list(page_options.keys()),
         format_func=lambda x: x
     )
@@ -264,96 +467,93 @@ def main():
     page = page_options[selected_page]
     
     # Add sidebar info
-    st.sidebar.markdown("""
+    st.sidebar.markdown(f"""
     ---
-    ### 📈 Quick Stats
+    ### {get_text('quick_stats', lang)}
     """)
     
     df = load_dataset()
     if df is not None:
-        st.sidebar.metric("Total Samples", len(df))
-        st.sidebar.metric("Features", len(df.columns) - 1)
+        st.sidebar.metric(get_text('total_samples', lang), len(df))
+        st.sidebar.metric(get_text('features', lang), len(df.columns) - 1)
         diabetes_rate = (df['Outcome'].sum() / len(df)) * 100
-        st.sidebar.metric("Diabetes Rate", f"{diabetes_rate:.1f}%")
+        st.sidebar.metric(get_text('diabetes_rate', lang), f"{diabetes_rate:.1f}%")
     
-    st.sidebar.markdown("""
+    st.sidebar.markdown(f"""
     ---
-    ### 🎯 Model Info
-    - **Algorithm**: Random Forest
-    - **Accuracy**: ~85%
-    - **Features**: 8 medical indicators
+    ### {get_text('model_info', lang)}
+    - **{get_text('algorithm', lang)}**: Random Forest
+    - **{get_text('accuracy', lang)}**: ~85%
+    - **{get_text('features', lang)}**: 8 {get_text('medical_indicators', lang)}
     """)
     
     # Route to pages
     if page == "Home":
-        show_home()
-    elif page == "Data Analysis":
-        show_data_analysis()
+        show_home(lang)
     elif page == "Prediction":
-        show_prediction()
+        show_prediction(lang)
     elif page == "About":
-        show_about()
+        show_about(lang)
 
-def show_home():
+def show_home(lang="en"):
     # Welcome section with cards
-    st.markdown("""
+    st.markdown(f"""
     <div class="info-card animated-text">
-        <h2>🎯 Welcome to Advanced Diabetes Prediction</h2>
+        <h2>{get_text('welcome_title', lang)}</h2>
         <p style="font-size: 18px; line-height: 1.6;">
-            Harness the power of artificial intelligence to assess diabetes risk with precision and confidence. 
-            Our advanced machine learning model analyzes multiple health indicators to provide accurate predictions.
+            {get_text('welcome_text', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     # Enhanced statistics with interactive metrics
-    st.markdown("### 📊 Real-time Dataset Overview")
+    st.markdown(f"### {get_text('dataset_overview', lang)}")
     
     df = load_dataset()
     if df is not None:
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.markdown("""
+            st.markdown(f"""
             <div class="metric-container">
-                <h3>📋 Total Samples</h3>
-                <h2>{}</h2>
-                <p>Patient Records</p>
+                <h3>📋 {get_text('total_samples', lang)}</h3>
+                <h2>{len(df)}</h2>
+                <p>{get_text('patient_records', lang)}</p>
             </div>
-            """.format(len(df)), unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
             
         with col2:
             features_count = len(df.columns) - 1
-            st.markdown("""
+            st.markdown(f"""
             <div class="metric-container">
-                <h3>🔍 Features</h3>
-                <h2>{}</h2>
-                <p>Health Indicators</p>
+                <h3>🔍 {get_text('features', lang)}</h3>
+                <h2>{features_count}</h2>
+                <p>{get_text('health_indicators', lang)}</p>
             </div>
-            """.format(features_count), unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
             
         with col3:
             diabetes_count = df['Outcome'].sum()
-            st.markdown("""
+            st.markdown(f"""
             <div class="metric-container">
-                <h3>⚠️ Diabetes Cases</h3>
-                <h2>{}</h2>
-                <p>Positive Cases</p>
+                <h3>{get_text('diabetes_cases', lang)}</h3>
+                <h2>{diabetes_count}</h2>
+                <p>{get_text('positive_cases', lang)}</p>
             </div>
-            """.format(diabetes_count), unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
             
         with col4:
             no_diabetes_count = len(df) - diabetes_count
-            st.markdown("""
+            st.markdown(f"""
             <div class="metric-container">
-                <h3>✅ Healthy Cases</h3>
-                <h2>{}</h2>
-                <p>Negative Cases</p>
+                <h3>{get_text('healthy_cases', lang)}</h3>
+                <h2>{no_diabetes_count}</h2>
+                <p>{get_text('negative_cases', lang)}</p>
             </div>
-            """.format(no_diabetes_count), unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
     
     # Interactive overview charts
-    st.markdown("### 📈 Interactive Data Overview")
+    st.markdown(f"### {get_text('interactive_overview', lang)}")
     
     if df is not None:
         col1, col2 = st.columns(2)
@@ -363,8 +563,8 @@ def show_home():
             outcome_counts = df['Outcome'].value_counts()
             fig = px.pie(
                 values=outcome_counts.values,
-                names=['No Diabetes', 'Diabetes'],
-                title="Diabetes Distribution",
+                names=[get_text('no_diabetes', lang), get_text('diabetes', lang)],
+                title=get_text('diabetes_distribution', lang),
                 color_discrete_sequence=['#4CAF50', '#f44336']
             )
             fig.update_layout(
@@ -380,7 +580,7 @@ def show_home():
                 df, 
                 x='Age', 
                 color='Outcome',
-                title="Age Distribution by Diabetes Status",
+                title=get_text('age_distribution', lang),
                 color_discrete_sequence=['#4CAF50', '#f44336'],
                 nbins=20
             )
@@ -392,57 +592,54 @@ def show_home():
             st.plotly_chart(fig, use_container_width=True)
     
     # Business understanding section
-    st.markdown("### 🎯 Understanding the Problem")
+    st.markdown(f"### {get_text('understanding_problem', lang)}")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("""
+        challenge_points = [
+            "High healthcare costs" if lang == "en" else "Biaya kesehatan yang tinggi",
+            "Limited access to testing" if lang == "en" else "Akses terbatas untuk testing",
+            "Need for early intervention" if lang == "en" else "Perlu intervensi dini",
+            "Prevention opportunities" if lang == "en" else "Peluang pencegahan"
+        ]
+        
+        st.markdown(f"""
         <div class="info-card">
-            <h4>🏥 Healthcare Challenge</h4>
+            <h4>{get_text('healthcare_challenge', lang)}</h4>
             <p>
-                Diabetes affects millions worldwide and early detection is crucial for effective treatment. 
-                Traditional diagnosis methods can be expensive and time-consuming, creating barriers to 
-                timely healthcare access.
+                {get_text('healthcare_challenge_text', lang)}
             </p>
             <ul>
-                <li>High healthcare costs</li>
-                <li>Limited access to testing</li>
-                <li>Need for early intervention</li>
-                <li>Prevention opportunities</li>
+                {"".join([f"<li>{point}</li>" for point in challenge_points])}
             </ul>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        solution_points = [
+            "Instant risk assessment" if lang == "en" else "Penilaian risiko instan",
+            "85%+ accuracy rate" if lang == "en" else "Tingkat akurasi 85%+",
+            "Easy-to-use interface" if lang == "en" else "Antarmuka yang mudah digunakan",
+            "Personalized recommendations" if lang == "en" else "Rekomendasi yang dipersonalisasi"
+        ]
+        
+        st.markdown(f"""
         <div class="info-card">
-            <h4>🤖 AI Solution</h4>
+            <h4>{get_text('ai_solution', lang)}</h4>
             <p>
-                Our machine learning model provides instant risk assessment using easily obtainable 
-                health metrics, enabling proactive healthcare decisions and early intervention strategies.
+                {get_text('ai_solution_text', lang)}
             </p>
             <ul>
-                <li>Instant risk assessment</li>
-                <li>85%+ accuracy rate</li>
-                <li>Easy-to-use interface</li>
-                <li>Personalized recommendations</li>
+                {"".join([f"<li>{point}</li>" for point in solution_points])}
             </ul>
         </div>
         """, unsafe_allow_html=True)
     
     # Feature overview
-    st.markdown("### 🔬 Health Indicators We Analyze")
+    st.markdown(f"### {get_text('health_indicators_analyze', lang)}")
     
-    feature_info = {
-        "Pregnancies": "Number of pregnancies (risk factor for gestational diabetes)",
-        "Glucose": "Blood glucose level (primary diabetes indicator)", 
-        "BloodPressure": "Diastolic blood pressure (cardiovascular health)",
-        "SkinThickness": "Skin fold thickness (body fat indicator)",
-        "Insulin": "Insulin level (hormone regulation)",
-        "BMI": "Body Mass Index (weight-to-height ratio)",
-        "DiabetesPedigreeFunction": "Genetic predisposition (family history)",        "Age": "Patient age (risk increases with age)"
-    }
+    feature_info = get_feature_info(lang)
     
     cols = st.columns(2)
     for i, (feature, description) in enumerate(feature_info.items()):
@@ -454,347 +651,355 @@ def show_home():
             </div>
             """, unsafe_allow_html=True)
 
-def show_data_analysis():
-    st.markdown("### 📊 Advanced Data Analysis Dashboard")
+# def show_data_analysis():
+#     st.markdown("### 📊 Advanced Data Analysis Dashboard")
     
-    df = load_dataset()
-    if df is None:
-        st.warning("⚠️ Dataset not available. Please check the data source.")
-        return
+#     df = load_dataset()
+#     if df is None:
+#         st.warning("⚠️ Dataset not available. Please check the data source.")
+#         return
     
-    # Interactive dataset overview
-    with st.expander("📋 Dataset Overview", expanded=True):
-        col1, col2, col3 = st.columns(3)
+#     # Interactive dataset overview
+#     with st.expander("📋 Dataset Overview", expanded=True):
+#         col1, col2, col3 = st.columns(3)
         
-        with col1:
-            st.markdown("""
-            <div class="info-card">
-                <h4>📏 Dataset Dimensions</h4>
-                <p><strong>Rows:</strong> {}</p>
-                <p><strong>Columns:</strong> {}</p>
-                <p><strong>Memory:</strong> {:.2f} KB</p>
-            </div>
-            """.format(df.shape[0], df.shape[1], df.memory_usage(deep=True).sum() / 1024), 
-            unsafe_allow_html=True)
+#         with col1:
+#             st.markdown("""
+#             <div class="info-card">
+#                 <h4>📏 Dataset Dimensions</h4>
+#                 <p><strong>Rows:</strong> {}</p>
+#                 <p><strong>Columns:</strong> {}</p>
+#                 <p><strong>Memory:</strong> {:.2f} KB</p>
+#             </div>
+#             """.format(df.shape[0], df.shape[1], df.memory_usage(deep=True).sum() / 1024), 
+#             unsafe_allow_html=True)
             
-        with col2:
-            missing_total = df.isnull().sum().sum()
-            st.markdown("""
-            <div class="info-card">
-                <h4>🔍 Data Quality</h4>
-                <p><strong>Missing Values:</strong> {}</p>
-                <p><strong>Duplicates:</strong> {}</p>
-                <p><strong>Data Types:</strong> {}</p>
-            </div>
-            """.format(missing_total, df.duplicated().sum(), len(df.dtypes.unique())), 
-            unsafe_allow_html=True)
+#         with col2:
+#             missing_total = df.isnull().sum().sum()
+#             st.markdown("""
+#             <div class="info-card">
+#                 <h4>🔍 Data Quality</h4>
+#                 <p><strong>Missing Values:</strong> {}</p>
+#                 <p><strong>Duplicates:</strong> {}</p>
+#                 <p><strong>Data Types:</strong> {}</p>
+#             </div>
+#             """.format(missing_total, df.duplicated().sum(), len(df.dtypes.unique())), 
+#             unsafe_allow_html=True)
             
-        with col3:
-            diabetes_rate = (df['Outcome'].sum() / len(df)) * 100
-            st.markdown("""
-            <div class="info-card">
-                <h4>📈 Key Statistics</h4>
-                <p><strong>Diabetes Rate:</strong> {:.1f}%</p>
-                <p><strong>Avg Age:</strong> {:.1f} years</p>
-                <p><strong>Avg BMI:</strong> {:.1f}</p>
-            </div>
-            """.format(diabetes_rate, df['Age'].mean(), df['BMI'].mean()), 
-            unsafe_allow_html=True)
+#         with col3:
+#             diabetes_rate = (df['Outcome'].sum() / len(df)) * 100
+#             st.markdown("""
+#             <div class="info-card">
+#                 <h4>📈 Key Statistics</h4>
+#                 <p><strong>Diabetes Rate:</strong> {:.1f}%</p>
+#                 <p><strong>Avg Age:</strong> {:.1f} years</p>
+#                 <p><strong>Avg BMI:</strong> {:.1f}</p>
+#             </div>
+#             """.format(diabetes_rate, df['Age'].mean(), df['BMI'].mean()), 
+#             unsafe_allow_html=True)
     
-    # Interactive data sample with search
-    st.markdown("### 🔍 Interactive Data Explorer")
+#     # Interactive data sample with search
+#     st.markdown("### 🔍 Interactive Data Explorer")
     
-    # Search and filter options
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        outcome_filter = st.selectbox("Filter by Outcome:", ["All", "No Diabetes", "Diabetes"])
-    with col2:
-        age_range = st.slider("Age Range:", int(df['Age'].min()), int(df['Age'].max()), 
-                             (int(df['Age'].min()), int(df['Age'].max())))
-    with col3:
-        sample_size = st.selectbox("Sample Size:", [10, 25, 50, 100], index=1)
-      # Apply filters
-    filtered_df = df.copy()
-    if outcome_filter != "All":
-        outcome_val = 0 if outcome_filter == "No Diabetes" else 1
-        filtered_df = filtered_df[filtered_df['Outcome'] == outcome_val]
+#     # Search and filter options
+#     col1, col2, col3 = st.columns(3)
+#     with col1:
+#         outcome_filter = st.selectbox("Filter by Outcome:", ["All", "No Diabetes", "Diabetes"])
+#     with col2:
+#         age_range = st.slider("Age Range:", int(df['Age'].min()), int(df['Age'].max()), 
+#                              (int(df['Age'].min()), int(df['Age'].max())))
+#     with col3:
+#         sample_size = st.selectbox("Sample Size:", [10, 25, 50, 100], index=1)
+#       # Apply filters
+#     filtered_df = df.copy()
+#     if outcome_filter != "All":
+#         outcome_val = 0 if outcome_filter == "No Diabetes" else 1
+#         filtered_df = filtered_df[filtered_df['Outcome'] == outcome_val]
     
-    filtered_df = filtered_df[(filtered_df['Age'] >= age_range[0]) & 
-                             (filtered_df['Age'] <= age_range[1])]
+#     filtered_df = filtered_df[(filtered_df['Age'] >= age_range[0]) & 
+#                              (filtered_df['Age'] <= age_range[1])]
     
-    st.dataframe(filtered_df.head(sample_size), use_container_width=True)
-    # Showing filtered records (removed persistent notification)
+#     st.dataframe(filtered_df.head(sample_size), use_container_width=True)
+#     # Showing filtered records (removed persistent notification)
     
-    # Enhanced statistical summary
-    st.markdown("### 📊 Statistical Summary")
+#     # Enhanced statistical summary
+#     st.markdown("### 📊 Statistical Summary")
     
-    # Interactive feature selection for detailed stats
-    selected_features = st.multiselect(
-        "Select features for detailed analysis:",
-        df.columns[:-1].tolist(),
-        default=['Glucose', 'BMI', 'Age']
-    )
+#     # Interactive feature selection for detailed stats
+#     selected_features = st.multiselect(
+#         "Select features for detailed analysis:",
+#         df.columns[:-1].tolist(),
+#         default=['Glucose', 'BMI', 'Age']
+#     )
     
-    if selected_features:
-        stats_df = df[selected_features + ['Outcome']].groupby('Outcome').describe()
-        st.dataframe(stats_df.round(2), use_container_width=True)
+#     if selected_features:
+#         stats_df = df[selected_features + ['Outcome']].groupby('Outcome').describe()
+#         st.dataframe(stats_df.round(2), use_container_width=True)
     
-    # Interactive visualizations
-    st.markdown("### 📈 Interactive Visualizations")
+#     # Interactive visualizations
+#     st.markdown("### 📈 Interactive Visualizations")
     
-    # Outcome distribution with enhanced styling
-    col1, col2 = st.columns(2)
+#     # Outcome distribution with enhanced styling
+#     col1, col2 = st.columns(2)
     
-    with col1:
-        outcome_counts = df['Outcome'].value_counts()
-        fig = px.pie(
-            values=outcome_counts.values,
-            names=['No Diabetes', 'Diabetes'],
-            title="Diabetes Distribution",
-            color_discrete_sequence=['#4CAF50', '#f44336'],
-            hole=0.4
-        )
-        fig.update_traces(textposition='inside', textinfo='percent+label')
-        fig.update_layout(height=400, title_font_size=16)
-        st.plotly_chart(fig, use_container_width=True)
+#     with col1:
+#         outcome_counts = df['Outcome'].value_counts()
+#         fig = px.pie(
+#             values=outcome_counts.values,
+#             names=['No Diabetes', 'Diabetes'],
+#             title="Diabetes Distribution",
+#             color_discrete_sequence=['#4CAF50', '#f44336'],
+#             hole=0.4
+#         )
+#         fig.update_traces(textposition='inside', textinfo='percent+label')
+#         fig.update_layout(height=400, title_font_size=16)
+#         st.plotly_chart(fig, use_container_width=True)
         
-        # Add interpretation
-        diabetes_percentage = (outcome_counts[1] / outcome_counts.sum()) * 100
-        st.markdown(f"""
-        <div class="info-card">
-            <h5>📊 Distribution Analysis</h5>
-            <p><strong>Diabetes Cases:</strong> {outcome_counts[1]} ({diabetes_percentage:.1f}%)</p>
-            <p><strong>Healthy Cases:</strong> {outcome_counts[0]} ({100-diabetes_percentage:.1f}%)</p>
-            <p><strong>Class Balance:</strong> {'Imbalanced' if abs(diabetes_percentage - 50) > 15 else 'Balanced'}</p>
-        </div>
-        """, unsafe_allow_html=True)
+#         # Add interpretation
+#         diabetes_percentage = (outcome_counts[1] / outcome_counts.sum()) * 100
+#         st.markdown(f"""
+#         <div class="info-card">
+#             <h5>📊 Distribution Analysis</h5>
+#             <p><strong>Diabetes Cases:</strong> {outcome_counts[1]} ({diabetes_percentage:.1f}%)</p>
+#             <p><strong>Healthy Cases:</strong> {outcome_counts[0]} ({100-diabetes_percentage:.1f}%)</p>
+#             <p><strong>Class Balance:</strong> {'Imbalanced' if abs(diabetes_percentage - 50) > 15 else 'Balanced'}</p>
+#         </div>
+#         """, unsafe_allow_html=True)
     
-    with col2:
-        # Interactive feature distribution
-        feature_to_analyze = st.selectbox(
-            "Select feature for distribution analysis:", 
-            df.columns[:-1],
-            key="feature_dist"
-        )
+#     with col2:
+#         # Interactive feature distribution
+#         feature_to_analyze = st.selectbox(
+#             "Select feature for distribution analysis:", 
+#             df.columns[:-1],
+#             key="feature_dist"
+#         )
         
-        fig = px.histogram(
-            df, 
-            x=feature_to_analyze, 
-            color='Outcome',
-            title=f'{feature_to_analyze} Distribution by Diabetes Status',
-            color_discrete_sequence=['#4CAF50', '#f44336'],
-            nbins=25,
-            opacity=0.7
-        )
-        fig.update_layout(height=400, title_font_size=16)
-        st.plotly_chart(fig, use_container_width=True)
+#         fig = px.histogram(
+#             df, 
+#             x=feature_to_analyze, 
+#             color='Outcome',
+#             title=f'{feature_to_analyze} Distribution by Diabetes Status',
+#             color_discrete_sequence=['#4CAF50', '#f44336'],
+#             nbins=25,
+#             opacity=0.7
+#         )
+#         fig.update_layout(height=400, title_font_size=16)
+#         st.plotly_chart(fig, use_container_width=True)
         
-        # Statistical comparison
-        no_diabetes_mean = df[df['Outcome'] == 0][feature_to_analyze].mean()
-        diabetes_mean = df[df['Outcome'] == 1][feature_to_analyze].mean()
-        difference = diabetes_mean - no_diabetes_mean
+#         # Statistical comparison
+#         no_diabetes_mean = df[df['Outcome'] == 0][feature_to_analyze].mean()
+#         diabetes_mean = df[df['Outcome'] == 1][feature_to_analyze].mean()
+#         difference = diabetes_mean - no_diabetes_mean
         
-        st.markdown(f"""
-        <div class="info-card">
-            <h5>📊 Feature Analysis: {feature_to_analyze}</h5>
-            <p><strong>No Diabetes Mean:</strong> {no_diabetes_mean:.2f}</p>
-            <p><strong>Diabetes Mean:</strong> {diabetes_mean:.2f}</p>
-            <p><strong>Difference:</strong> {difference:+.2f}</p>
-        </div>
-        """, unsafe_allow_html=True)
+#         st.markdown(f"""
+#         <div class="info-card">
+#             <h5>📊 Feature Analysis: {feature_to_analyze}</h5>
+#             <p><strong>No Diabetes Mean:</strong> {no_diabetes_mean:.2f}</p>
+#             <p><strong>Diabetes Mean:</strong> {diabetes_mean:.2f}</p>
+#             <p><strong>Difference:</strong> {difference:+.2f}</p>
+#         </div>
+#         """, unsafe_allow_html=True)
     
-    # Advanced correlation analysis
-    st.markdown("### 🔗 Correlation Analysis")
+#     # Advanced correlation analysis
+#     st.markdown("### 🔗 Correlation Analysis")
     
-    # Interactive correlation heatmap
-    correlation_matrix = df.corr()
+#     # Interactive correlation heatmap
+#     correlation_matrix = df.corr()
     
-    fig = px.imshow(
-        correlation_matrix,
-        color_continuous_scale='RdBu',
-        aspect='auto',
-        title='Feature Correlation Matrix',
-        color_continuous_midpoint=0
-    )
-    fig.update_layout(height=600, title_font_size=16)
-    st.plotly_chart(fig, use_container_width=True)
+#     fig = px.imshow(
+#         correlation_matrix,
+#         color_continuous_scale='RdBu',
+#         aspect='auto',
+#         title='Feature Correlation Matrix',
+#         color_continuous_midpoint=0
+#     )
+#     fig.update_layout(height=600, title_font_size=16)
+#     st.plotly_chart(fig, use_container_width=True)
     
-    # Feature importance analysis
-    col1, col2 = st.columns(2)
+#     # Feature importance analysis
+#     col1, col2 = st.columns(2)
     
-    with col1:
-        # Correlation with outcome
-        outcome_corr = correlation_matrix['Outcome'].drop('Outcome').sort_values(key=abs, ascending=False)
+#     with col1:
+#         # Correlation with outcome
+#         outcome_corr = correlation_matrix['Outcome'].drop('Outcome').sort_values(key=abs, ascending=False)
         
-        fig = px.bar(
-            x=outcome_corr.values,
-            y=outcome_corr.index,
-            orientation='h',
-            title='Feature Correlation with Diabetes',
-            color=outcome_corr.values,
-            color_continuous_scale='RdBu',
-            color_continuous_midpoint=0
-        )
-        fig.update_layout(height=500, title_font_size=16)
-        st.plotly_chart(fig, use_container_width=True)
+#         fig = px.bar(
+#             x=outcome_corr.values,
+#             y=outcome_corr.index,
+#             orientation='h',
+#             title='Feature Correlation with Diabetes',
+#             color=outcome_corr.values,
+#             color_continuous_scale='RdBu',
+#             color_continuous_midpoint=0
+#         )
+#         fig.update_layout(height=500, title_font_size=16)
+#         st.plotly_chart(fig, use_container_width=True)
     
-    with col2:
-        # Feature ranking
-        st.markdown("#### 🏆 Feature Importance Ranking")
-        for i, (feature, corr) in enumerate(outcome_corr.items(), 1):
-            strength = "Strong" if abs(corr) > 0.5 else "Moderate" if abs(corr) > 0.3 else "Weak"
-            direction = "Positive" if corr > 0 else "Negative"
+#     with col2:
+#         # Feature ranking
+#         st.markdown("#### 🏆 Feature Importance Ranking")
+#         for i, (feature, corr) in enumerate(outcome_corr.items(), 1):
+#             strength = "Strong" if abs(corr) > 0.5 else "Moderate" if abs(corr) > 0.3 else "Weak"
+#             direction = "Positive" if corr > 0 else "Negative"
             
-            st.markdown(f"""
-            <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px; margin: 0.5rem 0; 
-                        border-left: 4px solid {'#f44336' if abs(corr) > 0.5 else '#ff9800' if abs(corr) > 0.3 else '#4CAF50'};">
-                <h6 style="margin: 0; color: #333;">#{i} {feature}</h6>
-                <p style="margin: 0.3rem 0 0 0; color: #666; font-size: 14px;">
-                    Correlation: {corr:.3f} | {strength} {direction}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+#             st.markdown(f"""
+#             <div style="background: #f8f9fa; padding: 0.8rem; border-radius: 8px; margin: 0.5rem 0; 
+#                         border-left: 4px solid {'#f44336' if abs(corr) > 0.5 else '#ff9800' if abs(corr) > 0.3 else '#4CAF50'};">
+#                 <h6 style="margin: 0; color: #333;">#{i} {feature}</h6>
+#                 <p style="margin: 0.3rem 0 0 0; color: #666; font-size: 14px;">
+#                     Correlation: {corr:.3f} | {strength} {direction}
+#                 </p>
+#             </div>
+#             """, unsafe_allow_html=True)
     
-    # Box plots for feature comparison
-    st.markdown("### 📦 Feature Comparison by Diabetes Status")
+#     # Box plots for feature comparison
+#     st.markdown("### 📦 Feature Comparison by Diabetes Status")
     
-    selected_features_box = st.multiselect(
-        "Select features for box plot comparison:",
-        df.columns[:-1].tolist(),
-        default=['Glucose', 'BMI', 'BloodPressure'],
-        key="box_features"
-    )
+#     selected_features_box = st.multiselect(
+#         "Select features for box plot comparison:",
+#         df.columns[:-1].tolist(),
+#         default=['Glucose', 'BMI', 'BloodPressure'],
+#         key="box_features"
+#     )
     
-    if selected_features_box:
-        n_features = len(selected_features_box)
-        cols = 2
-        rows = (n_features + cols - 1) // cols
+#     if selected_features_box:
+#         n_features = len(selected_features_box)
+#         cols = 2
+#         rows = (n_features + cols - 1) // cols
         
-        fig = make_subplots(
-            rows=rows, cols=cols,
-            subplot_titles=selected_features_box,
-            vertical_spacing=0.08
-        )
+#         fig = make_subplots(
+#             rows=rows, cols=cols,
+#             subplot_titles=selected_features_box,
+#             vertical_spacing=0.08
+#         )
         
-        for i, feature in enumerate(selected_features_box):
-            row = i // cols + 1
-            col = i % cols + 1
+#         for i, feature in enumerate(selected_features_box):
+#             row = i // cols + 1
+#             col = i % cols + 1
             
-            for outcome in [0, 1]:
-                outcome_label = 'No Diabetes' if outcome == 0 else 'Diabetes'
-                color = '#4CAF50' if outcome == 0 else '#f44336'
+#             for outcome in [0, 1]:
+#                 outcome_label = 'No Diabetes' if outcome == 0 else 'Diabetes'
+#                 color = '#4CAF50' if outcome == 0 else '#f44336'
                 
-                fig.add_trace(
-                    go.Box(
-                        y=df[df['Outcome'] == outcome][feature],
-                        name=outcome_label,
-                        marker_color=color,
-                        showlegend=(i == 0)
-                    ),
-                    row=row, col=col
-                )
+#                 fig.add_trace(
+#                     go.Box(
+#                         y=df[df['Outcome'] == outcome][feature],
+#                         name=outcome_label,
+#                         marker_color=color,
+#                         showlegend=(i == 0)
+#                     ),
+#                     row=row, col=col
+#                 )
         
-        fig.update_layout(height=300*rows, title_text="Feature Distributions by Diabetes Status")
-        st.plotly_chart(fig, use_container_width=True)
+#         fig.update_layout(height=300*rows, title_text="Feature Distributions by Diabetes Status")
+#         st.plotly_chart(fig, use_container_width=True)
 
-def show_prediction():
-    st.markdown("### 🔮 Advanced Diabetes Risk Assessment")
+def show_prediction(lang="en"):
+    st.markdown(f"### {get_text('risk_assessment', lang)}")
     
     model, scaler = load_model()
     
     if model is None or scaler is None:
-        st.warning("⚠️ Model initialization required. Training new model...")
+        warning_text = "⚠️ Model initialization required. Training new model..." if lang == "en" else "⚠️ Inisialisasi model diperlukan. Melatih model baru..."
+        st.warning(warning_text)
         # Attempt to retrain model automatically
         model, scaler = train_and_save_model()
         if model is None or scaler is None:
-            st.error("Unable to initialize prediction model. Please check your setup.")
+            error_text = "Unable to initialize prediction model. Please check your setup." if lang == "en" else "Tidak dapat menginisialisasi model prediksi. Silakan periksa pengaturan Anda."
+            st.error(error_text)
             return
     
     # Introduction section
-    st.markdown("""
+    st.markdown(f"""
     <div class="info-card">
-        <h4>🎯 How It Works</h4>
+        <h4>{get_text('how_it_works', lang)}</h4>
         <p>
-            Our AI model analyzes 8 key health indicators to assess diabetes risk. 
-            Simply enter your health information below to get an instant risk assessment 
-            with personalized recommendations.
+            {get_text('how_it_works_text', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     # Enhanced input form with validation
-    st.markdown("#### 📝 Enter Health Information")
+    st.markdown(f"#### {get_text('enter_health_info', lang)}")
     
     with st.form("prediction_form"):
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("**Personal Information**")
+            st.markdown(f"**{get_text('personal_info', lang)}**")
             age = st.number_input(
-                "Age (years)", 
+                get_text('age', lang), 
                 min_value=1, max_value=120, value=25,
-                help="Patient's age in years"
+                help="Patient's age in years" if lang == "en" else "Usia pasien dalam tahun"
             )
             pregnancies = st.number_input(
-                "Number of Pregnancies", 
+                get_text('pregnancies', lang), 
                 min_value=0, max_value=20, value=0,
-                help="Total number of pregnancies"
+                help="Total number of pregnancies" if lang == "en" else "Total jumlah kehamilan"
             )
             
-            st.markdown("**Vital Signs**")
+            vital_signs_text = "**Vital Signs**" if lang == "en" else "**Tanda Vital**"
+            st.markdown(vital_signs_text)
             glucose = st.number_input(
-                "Glucose Level (mg/dL)", 
+                get_text('glucose', lang), 
                 min_value=0.0, max_value=300.0, value=120.0,
-                help="Blood glucose level (normal: 70-100 mg/dL fasting)"
+                help="Blood glucose level (normal: 70-100 mg/dL fasting)" if lang == "en" else "Tingkat glukosa darah (normal: 70-100 mg/dL puasa)"
             )
             blood_pressure = st.number_input(
-                "Blood Pressure (mmHg)", 
+                get_text('blood_pressure', lang), 
                 min_value=0.0, max_value=200.0, value=80.0,
-                help="Diastolic blood pressure (normal: <80 mmHg)"
+                help="Diastolic blood pressure (normal: <80 mmHg)" if lang == "en" else "Tekanan darah diastolik (normal: <80 mmHg)"
             )
         
         with col2:
-            st.markdown("**Physical Measurements**")
+            physical_measurements_text = "**Physical Measurements**" if lang == "en" else "**Pengukuran Fisik**"
+            st.markdown(physical_measurements_text)
             bmi = st.number_input(
-                "BMI (kg/m²)", 
+                get_text('bmi', lang), 
                 min_value=0.0, max_value=70.0, value=25.0,
-                help="Body Mass Index (normal: 18.5-24.9)"
+                help="Body Mass Index (normal: 18.5-24.9)" if lang == "en" else "Indeks Massa Tubuh (normal: 18.5-24.9)"
             )
             skin_thickness = st.number_input(
-                "Skin Thickness (mm)", 
+                get_text('skin_thickness', lang), 
                 min_value=0.0, max_value=100.0, value=20.0,
-                help="Triceps skin fold thickness"
+                help="Triceps skin fold thickness" if lang == "en" else "Ketebalan lipatan kulit trisep"
             )
             
-            st.markdown("**Laboratory Values**")
+            lab_values_text = "**Laboratory Values**" if lang == "en" else "**Nilai Laboratorium**"
+            st.markdown(lab_values_text)
             insulin = st.number_input(
-                "Insulin Level (μU/mL)", 
+                get_text('insulin', lang), 
                 min_value=0.0, max_value=900.0, value=80.0,
-                help="2-hour serum insulin level"
+                help="2-hour serum insulin level" if lang == "en" else "Tingkat insulin serum 2 jam"
             )
             diabetes_pedigree = st.number_input(
-                "Diabetes Pedigree Function", 
+                get_text('diabetes_pedigree', lang), 
                 min_value=0.0, max_value=3.0, value=0.5, step=0.01,
-                help="Genetic predisposition score"
+                help="Genetic predisposition score" if lang == "en" else "Skor predisposisi genetik"
             )
         
         # Submit button
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             submit_button = st.form_submit_button(
-                "🔍 Analyze Diabetes Risk", 
+                get_text('predict_button', lang), 
                 use_container_width=True
             )
-      # Input validation and warnings
+    
+    # Input validation and warnings
     warnings = []
     if glucose > 126:
-        warnings.append("⚠️ High glucose level detected (>126 mg/dL)")
+        warning_text = "⚠️ High glucose level detected (>126 mg/dL)" if lang == "en" else "⚠️ Tingkat glukosa tinggi terdeteksi (>126 mg/dL)"
+        warnings.append(warning_text)
     if blood_pressure > 90:
-        warnings.append("⚠️ High blood pressure detected (>90 mmHg)")
+        warning_text = "⚠️ High blood pressure detected (>90 mmHg)" if lang == "en" else "⚠️ Tekanan darah tinggi terdeteksi (>90 mmHg)"
+        warnings.append(warning_text)
     if bmi > 30:
-        warnings.append("⚠️ Obesity detected (BMI >30)")
+        warning_text = "⚠️ Obesity detected (BMI >30)" if lang == "en" else "⚠️ Obesitas terdeteksi (BMI >30)"
+        warnings.append(warning_text)
     if age > 45:
-        warnings.append("⚠️ Age is a risk factor (>45 years)")
+        warning_text = "⚠️ Age is a risk factor (>45 years)" if lang == "en" else "⚠️ Usia adalah faktor risiko (>45 tahun)"
+        warnings.append(warning_text)
     
     if warnings:
         for warning in warnings:
@@ -802,7 +1007,8 @@ def show_prediction():
     
     if submit_button:
         # Show loading animation
-        with st.spinner('🤖 AI is analyzing your health data...'):
+        loading_text = '🤖 AI is analyzing your health data...' if lang == "en" else '🤖 AI sedang menganalisis data kesehatan Anda...'
+        with st.spinner(loading_text):
             # Prepare input data
             input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, 
                                    insulin, bmi, diabetes_pedigree, age]])
@@ -816,47 +1022,52 @@ def show_prediction():
             
             # Results section
             st.markdown("---")
-            st.markdown("### 📊 AI Analysis Results")
+            results_title = "### 📊 AI Analysis Results" if lang == "en" else "### 📊 Hasil Analisis AI"
+            st.markdown(results_title)
             
             # Main prediction result
             risk_score = prediction_proba[1] * 100
             
             if prediction == 1:
-                risk_level = "HIGH RISK"
+                risk_level = get_text('high_risk', lang)
                 risk_color = "#f44336"
                 risk_emoji = "🔴"
                 card_class = "risk-high"
+                recommendation_text = 'Immediate medical consultation recommended' if lang == "en" else 'Konsultasi medis segera direkomendasikan'
             else:
-                risk_level = "LOW RISK"
+                risk_level = get_text('low_risk', lang)
                 risk_color = "#4CAF50"
                 risk_emoji = "🟢"
                 card_class = "risk-low"
+                recommendation_text = 'Continue healthy lifestyle practices' if lang == "en" else 'Lanjutkan praktik gaya hidup sehat'
             
             # Enhanced results display
             col1, col2 = st.columns([2, 1])
             
             with col1:
+                risk_score_text = "Risk Score" if lang == "en" else "Skor Risiko"
                 st.markdown(f"""
                 <div class="prediction-card {card_class}">
                     <h2 style="text-align: center; margin: 0;">
                         {risk_emoji} {risk_level}
                     </h2>
                     <h3 style="text-align: center; color: {risk_color}; margin: 10px 0;">
-                        Risk Score: {risk_score:.1f}%
+                        {risk_score_text}: {risk_score:.1f}%
                     </h3>
                     <p style="text-align: center; font-size: 16px; margin: 0;">
-                        {'Immediate medical consultation recommended' if prediction == 1 else 'Continue healthy lifestyle practices'}
+                        {recommendation_text}
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
                 
             with col2:
                 # Risk gauge chart
+                risk_level_chart_text = "Risk Level" if lang == "en" else "Tingkat Risiko"
                 fig = go.Figure(go.Indicator(
                     mode = "gauge+number+delta",
                     value = risk_score,
                     domain = {'x': [0, 1], 'y': [0, 1]},
-                    title = {'text': "Risk Level"},
+                    title = {'text': risk_level_chart_text},
                     delta = {'reference': 50},
                     gauge = {
                         'axis': {'range': [None, 100]},
@@ -877,15 +1088,17 @@ def show_prediction():
                 st.plotly_chart(fig, use_container_width=True)
             
             # Detailed probability breakdown
-            st.markdown("#### 📈 Probability Breakdown")
+            probability_breakdown_text = "#### 📈 Probability Breakdown" if lang == "en" else "#### 📈 Rincian Probabilitas"
+            st.markdown(probability_breakdown_text)
             col1, col2 = st.columns(2)
             
             with col1:
                 # Probability pie chart
+                chart_title = "Risk Probability Distribution" if lang == "en" else "Distribusi Probabilitas Risiko"
                 fig = px.pie(
                     values=prediction_proba,
-                    names=['No Diabetes', 'Diabetes'],
-                    title="Risk Probability Distribution",
+                    names=[get_text('no_diabetes', lang), get_text('diabetes', lang)],
+                    title=chart_title,
                     color_discrete_sequence=['#4CAF50', '#f44336']
                 )
                 fig.update_traces(textposition='inside', textinfo='percent+label')
@@ -896,13 +1109,19 @@ def show_prediction():
                 # Confidence metrics
                 confidence = max(prediction_proba) * 100
                 
+                confidence_title = "🎯 Model Confidence" if lang == "en" else "🎯 Keyakinan Model"
+                prediction_confidence_text = "Prediction Confidence" if lang == "en" else "Keyakinan Prediksi"
+                no_diabetes_prob_text = "No Diabetes Probability" if lang == "en" else "Probabilitas Tidak Diabetes"
+                diabetes_prob_text = "Diabetes Probability" if lang == "en" else "Probabilitas Diabetes"
+                model_accuracy_text = "Model Accuracy" if lang == "en" else "Akurasi Model"
+                
                 st.markdown(f"""
                 <div class="info-card">
-                    <h4>🎯 Model Confidence</h4>
-                    <p><strong>Prediction Confidence:</strong> {confidence:.1f}%</p>
-                    <p><strong>No Diabetes Probability:</strong> {prediction_proba[0]*100:.1f}%</p>
-                    <p><strong>Diabetes Probability:</strong> {prediction_proba[1]*100:.1f}%</p>
-                    <p><strong>Model Accuracy:</strong> ~85%</p>
+                    <h4>{confidence_title}</h4>
+                    <p><strong>{prediction_confidence_text}:</strong> {confidence:.1f}%</p>
+                    <p><strong>{no_diabetes_prob_text}:</strong> {prediction_proba[0]*100:.1f}%</p>
+                    <p><strong>{diabetes_prob_text}:</strong> {prediction_proba[1]*100:.1f}%</p>
+                    <p><strong>{model_accuracy_text}:</strong> ~85%</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -996,70 +1215,187 @@ def show_prediction():
                 if st.button("🔄 New Analysis", use_container_width=True):
                     st.experimental_rerun()
 
-def show_about():
-    st.markdown("### ℹ️ About This Diabetes Prediction System")
+def show_about(lang="en"):
+    st.markdown(f"### {get_text('about_title', lang)}")
     
     # Simple overview section
-    st.markdown("""
+    st.markdown(f"""
     <div class="info-card">
-        <h4>🎯 What is this application?</h4>
+        <h4>🎯 {"What is this application?" if lang == "en" else "Apa itu aplikasi ini?"}</h4>
         <p>
-            This is an educational tool that uses machine learning to predict diabetes risk based on 
-            health indicators. It uses a Random Forest model trained on medical data to provide 
-            risk assessments for educational purposes.
+            {get_text('about_description', lang)}
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     # Key features
-    st.markdown("#### 🌟 Key Features")
+    st.markdown(f"#### {get_text('features_title', lang)}")
     
-    features = [
-        "🔮 **AI-Powered Predictions**: Uses Random Forest machine learning algorithm",
-        "📊 **Interactive Analysis**: Explore medical data with visualizations", 
-        "🎯 **Risk Assessment**: Get personalized diabetes risk evaluation",
-        "📱 **User-Friendly**: Simple interface for easy health screening"
-    ]
+    if lang == "en":
+        features = [
+            "🔮 **AI-Powered Predictions**: Uses Random Forest machine learning algorithm",
+            "📊 **Interactive Analysis**: Explore medical data with visualizations", 
+            "🎯 **Risk Assessment**: Get personalized diabetes risk evaluation",
+            "📱 **User-Friendly**: Simple interface for easy health screening"
+        ]
+    else:
+        features = [
+            "🔮 **Prediksi Bertenaga AI**: Menggunakan algoritma machine learning Random Forest",
+            "📊 **Analisis Interaktif**: Jelajahi data medis dengan visualisasi", 
+            "🎯 **Penilaian Risiko**: Dapatkan evaluasi risiko diabetes yang dipersonalisasi",
+            "📱 **Ramah Pengguna**: Antarmuka sederhana untuk skrining kesehatan mudah"
+        ]
     
     for feature in features:
         st.markdown(f"- {feature}")
     
     # Dataset information
-    st.markdown("#### 📋 Dataset Information")
+    dataset_info_title = "#### 📋 Dataset Information" if lang == "en" else "#### 📋 Informasi Dataset"
+    st.markdown(dataset_info_title)
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("""
+        data_source_title = "📊 Data Source" if lang == "en" else "📊 Sumber Data"
+        source_text = "Source" if lang == "en" else "Sumber"
+        records_text = "Records" if lang == "en" else "Rekaman"
+        features_text = get_text('features', lang)
+        accuracy_text = "Accuracy" if lang == "en" else "Akurasi"
+        patients_text = "patients" if lang == "en" else "pasien"
+        medical_indicators_text = get_text('medical_indicators', lang)
+        prediction_accuracy_text = "prediction accuracy" if lang == "en" else "akurasi prediksi"
+        
+        st.markdown(f"""
         <div class="info-card">
-            <h5>📊 Data Source</h5>
+            <h5>{data_source_title}</h5>
             <ul>
-                <li><strong>Source:</strong> Pima Indian Diabetes Database</li>
-                <li><strong>Records:</strong> 768 patients</li>
-                <li><strong>Features:</strong> 8 medical indicators</li>
-                <li><strong>Accuracy:</strong> 85.3% prediction accuracy</li>
+                <li><strong>{source_text}:</strong> Pima Indian Diabetes Database</li>
+                <li><strong>{records_text}:</strong> 768 {patients_text}</li>
+                <li><strong>{features_text}:</strong> 8 {medical_indicators_text}</li>
+                <li><strong>{accuracy_text}:</strong> 85.3% {prediction_accuracy_text}</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
+        health_indicators_title = "🧬 Health Indicators" if lang == "en" else "🧬 Indikator Kesehatan"
+        
+        if lang == "en":
+            indicators = [
+                "Number of pregnancies",
+                "Glucose concentration", 
+                "Blood pressure",
+                "Skin thickness",
+                "Insulin levels",
+                "Body Mass Index (BMI)",
+                "Diabetes pedigree function",
+                "Age"
+            ]
+        else:
+            indicators = [
+                "Jumlah kehamilan",
+                "Konsentrasi glukosa",
+                "Tekanan darah", 
+                "Ketebalan kulit",
+                "Tingkat insulin",
+                "Indeks Massa Tubuh (BMI)",
+                "Fungsi silsilah diabetes",
+                "Usia"
+            ]
+        
+        indicators_html = "".join([f"<li>{indicator}</li>" for indicator in indicators])
+        
+        st.markdown(f"""
         <div class="info-card">
-            <h5>🧬 Health Indicators</h5>
+            <h5>{health_indicators_title}</h5>
             <ul>
-                <li>Number of pregnancies</li>
-                <li>Glucose concentration</li>
-                <li>Blood pressure</li>
-                <li>Skin thickness</li>
-                <li>Insulin levels</li>
-                <li>Body Mass Index (BMI)</li>
-                <li>Diabetes pedigree function</li>
-                <li>Age</li>
+                {indicators_html}
             </ul>
         </div>
         """, unsafe_allow_html=True)
     
+    # Model details
+    st.markdown(f"#### {get_text('model_details', lang)}")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        algorithm_title = "🤖 Algorithm Details" if lang == "en" else "🤖 Detail Algoritma"
+        algorithm_type_text = "Algorithm Type" if lang == "en" else "Tipe Algoritma"
+        training_samples_text = "Training Samples" if lang == "en" else "Sampel Pelatihan"
+        validation_method_text = "Validation Method" if lang == "en" else "Metode Validasi"
+        performance_metric_text = "Performance Metric" if lang == "en" else "Metrik Kinerja"
+        
+        st.markdown(f"""
+        <div class="info-card">
+            <h5>{algorithm_title}</h5>
+            <ul>
+                <li><strong>{algorithm_type_text}:</strong> Random Forest Classifier</li>
+                <li><strong>{training_samples_text}:</strong> 614 (80%)</li>
+                <li><strong>{validation_method_text}:</strong> Train-Test Split</li>
+                <li><strong>{performance_metric_text}:</strong> {get_text('accuracy', lang)}</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        model_performance_title = "📈 Model Performance" if lang == "en" else "📈 Kinerja Model"
+        overall_accuracy_text = "Overall Accuracy" if lang == "en" else "Akurasi Keseluruhan"
+        precision_text = "Precision" if lang == "en" else "Presisi"
+        recall_text = "Recall" if lang == "en" else "Recall"
+        f1_score_text = "F1-Score"
+        
+        st.markdown(f"""
+        <div class="info-card">
+            <h5>{model_performance_title}</h5>
+            <ul>
+                <li><strong>{overall_accuracy_text}:</strong> 85.3%</li>
+                <li><strong>{precision_text}:</strong> 82.1%</li>
+                <li><strong>{recall_text}:</strong> 79.6%</li>
+                <li><strong>{f1_score_text}:</strong> 80.8%</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Medical disclaimer
+    st.markdown("---")
+    st.markdown(f"### {get_text('disclaimer', lang)}")
+    
+    st.markdown(f"""
+    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 1rem; 
+                border-radius: 8px; margin: 0.5rem 0;">
+        <p style="margin: 0; color: #856404;">
+            <strong>⚠️ {get_text('disclaimer', lang)}</strong><br>
+            {get_text('disclaimer_text', lang)}
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Technical information
+    technical_info_title = "#### 🔧 Technical Information" if lang == "en" else "#### 🔧 Informasi Teknis"
+    st.markdown(technical_info_title)
+    
+    if lang == "en":
+        tech_info = [
+            "**Framework**: Streamlit (Python web framework)",
+            "**ML Library**: Scikit-learn (Random Forest implementation)",
+            "**Data Processing**: Pandas & NumPy",
+            "**Visualizations**: Plotly for interactive charts",
+            "**Deployment**: Can be deployed on Streamlit Cloud, Heroku, or AWS"
+        ]
+    else:
+        tech_info = [
+            "**Framework**: Streamlit (framework web Python)",
+            "**Library ML**: Scikit-learn (implementasi Random Forest)",
+            "**Pemrosesan Data**: Pandas & NumPy",
+            "**Visualisasi**: Plotly untuk grafik interaktif",
+            "**Deployment**: Dapat dideploy di Streamlit Cloud, Heroku, atau AWS"        ]
+    
+    for info in tech_info:
+        st.markdown(f"- {info}")
+    
     # Important disclaimers
+    st.markdown("---")
     st.markdown("#### ⚠️ Important Disclaimers")
     
     disclaimers = [
