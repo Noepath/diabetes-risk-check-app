@@ -144,7 +144,7 @@ def load_model():
 @st.cache_data
 def load_dataset():
     try:
-        df = pd.read_csv(r"d:\Farid2\Project\DataSience\Project-Akhir\akhir\dataset\diabetes.csv")
+        df = pd.read_csv(r"dataset/diabetes.csv")
         return df
     except FileNotFoundError:
         st.error("Dataset not found. Please check the file path.")
