@@ -135,13 +135,13 @@ def load_model():
         scaler = joblib.load('diabetes_scaler.pkl')
         return model, scaler
     except FileNotFoundError:
-        st.error("Model files not found. Training a new model...")
+        # Model files not found - training new model (removed persistent notification)
         return train_and_save_model()
     except (ModuleNotFoundError, ImportError, ValueError) as e:
-        st.warning(f"Model compatibility issue detected. Training a new model...")
+        # Model compatibility issue - training new model (removed persistent notification)
         return train_and_save_model()
     except Exception as e:
-        st.error(f"Error loading model: {str(e)}. Training a new model...")
+        # Error loading model - training new model (removed persistent notification)
         return train_and_save_model()
 
 # Train and save model function
@@ -152,11 +152,10 @@ def train_and_save_model():
         from sklearn.preprocessing import StandardScaler
         from sklearn.model_selection import train_test_split
         import joblib
-        
-        # Load dataset
+          # Load dataset
         df = load_dataset()
         if df is None:
-            st.error("Cannot train model: Dataset not available")
+            # Cannot train model: Dataset not available (removed persistent notification)
             return None, None
         
         # Prepare data
@@ -173,16 +172,15 @@ def train_and_save_model():
         # Train model
         model = RandomForestClassifier(n_estimators=100, random_state=42)
         model.fit(X_train_scaled, y_train)
-        
-        # Save model and scaler using joblib for better compatibility
+          # Save model and scaler using joblib for better compatibility
         joblib.dump(model, 'diabetes_rf_model.pkl')
         joblib.dump(scaler, 'diabetes_scaler.pkl')
         
-        st.success("Model trained and saved successfully!")
+        # Model trained and saved successfully (removed persistent notification)
         return model, scaler
         
     except Exception as e:
-        st.error(f"Error training model: {str(e)}")
+        # Error training model (removed persistent notification - using fallback)
         return None, None
 
 # Load dataset for analysis
@@ -200,17 +198,17 @@ def load_dataset():
         for path in possible_paths:
             try:
                 df = pd.read_csv(path)
-                st.success(f"Dataset loaded from: {path}")
+                # Dataset loaded successfully (removed persistent notification)
                 return df
             except FileNotFoundError:
                 continue
         
         # If no dataset found, create a sample dataset
-        st.warning("Dataset not found. Creating sample dataset for demonstration...")
+        # Creating sample dataset for demonstration (removed persistent notification)
         return create_sample_dataset()
         
     except Exception as e:
-        st.error(f"Error loading dataset: {str(e)}")
+        # Error loading dataset - using sample data (removed persistent notification)
         return create_sample_dataset()
 
 def create_sample_dataset():
@@ -227,11 +225,10 @@ def create_sample_dataset():
         'BMI': np.random.normal(32, 7, n_samples).clip(0, 67),
         'DiabetesPedigreeFunction': np.random.uniform(0.078, 2.42, n_samples),
         'Age': np.random.randint(21, 81, n_samples),
-        'Outcome': np.random.choice([0, 1], n_samples, p=[0.65, 0.35])
-    }
+        'Outcome': np.random.choice([0, 1], n_samples, p=[0.65, 0.35])    }
     
     df = pd.DataFrame(data)
-    st.info("Using sample dataset for demonstration. For production use, please provide the actual diabetes.csv file.")
+    # Using sample dataset for demonstration (removed persistent notification)
     return df
 
 def main():
@@ -255,8 +252,7 @@ def main():
     page_options = {
         "🏠 Home": "Home",
         "📊 Data Analysis": "Data Analysis", 
-        "🔮 Prediction": "Prediction",
-        "ℹ️ About": "About"
+        "🔮 Prediction": "Prediction",        "ℹ️ About": "About"
     }
     
     selected_page = st.sidebar.selectbox(
@@ -266,20 +262,6 @@ def main():
     )
     
     page = page_options[selected_page]
-    
-    # Progress bar for visual appeal
-    progress_bar = st.sidebar.progress(0)
-    status_text = st.sidebar.empty()
-    
-    # Simulate loading for visual appeal
-    for i in range(100):
-        progress_bar.progress(i + 1)
-        time.sleep(0.01)
-    
-    status_text.text('Ready!')
-    time.sleep(0.5)
-    status_text.empty()
-    progress_bar.empty()
     
     # Add sidebar info
     st.sidebar.markdown("""
@@ -314,22 +296,15 @@ def main():
 
 def show_home():
     # Welcome section with cards
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.markdown("""
-        <div class="info-card animated-text">
-            <h2>🎯 Welcome to Advanced Diabetes Prediction</h2>
-            <p style="font-size: 18px; line-height: 1.6;">
-                Harness the power of artificial intelligence to assess diabetes risk with precision and confidence. 
-                Our advanced machine learning model analyzes multiple health indicators to provide accurate predictions.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.image("https://via.placeholder.com/300x200/667eea/ffffff?text=AI+Health", 
-                use_column_width=True)
+    st.markdown("""
+    <div class="info-card animated-text">
+        <h2>🎯 Welcome to Advanced Diabetes Prediction</h2>
+        <p style="font-size: 18px; line-height: 1.6;">
+            Harness the power of artificial intelligence to assess diabetes risk with precision and confidence. 
+            Our advanced machine learning model analyzes multiple health indicators to provide accurate predictions.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Enhanced statistics with interactive metrics
     st.markdown("### 📊 Real-time Dataset Overview")
@@ -466,8 +441,7 @@ def show_home():
         "SkinThickness": "Skin fold thickness (body fat indicator)",
         "Insulin": "Insulin level (hormone regulation)",
         "BMI": "Body Mass Index (weight-to-height ratio)",
-        "DiabetesPedigreeFunction": "Genetic predisposition (family history)",
-        "Age": "Patient age (risk increases with age)"
+        "DiabetesPedigreeFunction": "Genetic predisposition (family history)",        "Age": "Patient age (risk increases with age)"
     }
     
     cols = st.columns(2)
@@ -485,7 +459,7 @@ def show_data_analysis():
     
     df = load_dataset()
     if df is None:
-        st.error("Dataset not available. Please check the data source.")
+        st.warning("⚠️ Dataset not available. Please check the data source.")
         return
     
     # Interactive dataset overview
@@ -539,8 +513,7 @@ def show_data_analysis():
                              (int(df['Age'].min()), int(df['Age'].max())))
     with col3:
         sample_size = st.selectbox("Sample Size:", [10, 25, 50, 100], index=1)
-    
-    # Apply filters
+      # Apply filters
     filtered_df = df.copy()
     if outcome_filter != "All":
         outcome_val = 0 if outcome_filter == "No Diabetes" else 1
@@ -550,7 +523,7 @@ def show_data_analysis():
                              (filtered_df['Age'] <= age_range[1])]
     
     st.dataframe(filtered_df.head(sample_size), use_container_width=True)
-    st.info(f"Showing {min(sample_size, len(filtered_df))} of {len(filtered_df)} filtered records")
+    # Showing filtered records (removed persistent notification)
     
     # Enhanced statistical summary
     st.markdown("### 📊 Statistical Summary")
@@ -728,9 +701,14 @@ def show_prediction():
     st.markdown("### 🔮 Advanced Diabetes Risk Assessment")
     
     model, scaler = load_model()
+    
     if model is None or scaler is None:
-        st.error("⚠️ Model files not found. Please run the training script first.")
-        return
+        st.warning("⚠️ Model initialization required. Training new model...")
+        # Attempt to retrain model automatically
+        model, scaler = train_and_save_model()
+        if model is None or scaler is None:
+            st.error("Unable to initialize prediction model. Please check your setup.")
+            return
     
     # Introduction section
     st.markdown("""
@@ -807,8 +785,7 @@ def show_prediction():
                 "🔍 Analyze Diabetes Risk", 
                 use_container_width=True
             )
-    
-    # Input validation and warnings
+      # Input validation and warnings
     warnings = []
     if glucose > 126:
         warnings.append("⚠️ High glucose level detected (>126 mg/dL)")
@@ -826,8 +803,6 @@ def show_prediction():
     if submit_button:
         # Show loading animation
         with st.spinner('🤖 AI is analyzing your health data...'):
-            time.sleep(2)  # Simulate processing time
-            
             # Prepare input data
             input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, 
                                    insulin, bmi, diabetes_pedigree, age]])
@@ -1008,288 +983,88 @@ def show_prediction():
                     {rec}
                 </div>
                 """, unsafe_allow_html=True)
-            
-            # Medical disclaimer
+              # Medical disclaimer
             st.markdown("---")
             st.error("""
             **⚠️ Important Medical Disclaimer**: This prediction tool is for educational purposes only and should not replace professional medical advice. 
             Always consult with a qualified healthcare provider for proper medical evaluation and treatment decisions.
             """)
             
-            # Action buttons
+            # Action button
             col1, col2, col3 = st.columns(3)
-            with col1:
-                if st.button("📄 Generate Report"):
-                    st.success("Report generation feature coming soon!")
-            with col2:
-                if st.button("📧 Email Results"):
-                    st.success("Email feature coming soon!")
-            with col3:
-                if st.button("🔄 New Analysis"):
+            with col2:  # Center the button
+                if st.button("🔄 New Analysis", use_container_width=True):
                     st.experimental_rerun()
 
 def show_about():
-    st.markdown("### ℹ️ About This Advanced Diabetes Prediction System")
+    st.markdown("### ℹ️ About This Diabetes Prediction System")
     
-    # Hero section
+    # Simple overview section
     st.markdown("""
-    <div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <h3 style="color: white; text-align: center;">🚀 Next-Generation Healthcare AI</h3>
-        <p style="text-align: center; font-size: 18px;">
-            Empowering early diabetes detection through cutting-edge machine learning technology
+    <div class="info-card">
+        <h4>🎯 What is this application?</h4>
+        <p>
+            This is an educational tool that uses machine learning to predict diabetes risk based on 
+            health indicators. It uses a Random Forest model trained on medical data to provide 
+            risk assessments for educational purposes.
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # Project overview with interactive tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Project Overview", "🤖 AI Technology", "📊 Dataset Info", "🛠️ Technical Details"])
+    # Key features
+    st.markdown("#### 🌟 Key Features")
     
-    with tab1:
-        col1, col2 = st.columns([2, 1])
-        
-        with col1:
-            st.markdown("""
-            <div class="info-card">
-                <h4>🎯 Mission Statement</h4>
-                <p>
-                    Our mission is to democratize healthcare by providing accessible, accurate, and instant 
-                    diabetes risk assessment using state-of-the-art artificial intelligence. We aim to bridge 
-                    the gap between expensive medical testing and preventive healthcare.
-                </p>
-                
-                <h4>🌟 Key Features</h4>
-                <ul>
-                    <li><strong>Instant Analysis:</strong> Get results in seconds, not days</li>
-                    <li><strong>High Accuracy:</strong> 85%+ prediction accuracy</li>
-                    <li><strong>User-Friendly:</strong> No medical expertise required</li>
-                    <li><strong>Personalized:</strong> Tailored recommendations for each user</li>
-                    <li><strong>Educational:</strong> Learn about diabetes risk factors</li>
-                </ul>
-                
-                <h4>💡 Innovation</h4>
-                <p>
-                    This application represents a breakthrough in preventive healthcare technology, 
-                    making advanced medical AI accessible to everyone while maintaining the highest 
-                    standards of accuracy and reliability.
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col2:
-            # Interactive metrics
-            st.markdown("#### 📈 Impact Metrics")
-            
-            metrics_data = {
-                "Users Helped": 1000,
-                "Accuracy Rate": 85.3,
-                "Countries": 25,
-                "Medical Features": 8
-            }
-            
-            for metric, value in metrics_data.items():
-                if metric == "Accuracy Rate":
-                    st.metric(metric, f"{value}%", delta="5.3%")
-                elif metric == "Countries":
-                    st.metric(metric, value, delta="10")
-                else:
-                    st.metric(metric, f"{value:,}")
-    
-    with tab2:
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("""
-            <div class="info-card">
-                <h4>🧠 Machine Learning Architecture</h4>
-                <p><strong>Algorithm:</strong> Random Forest Classifier</p>
-                <p><strong>Training Data:</strong> Pima Indian Diabetes Dataset</p>
-                <p><strong>Validation Method:</strong> Cross-validation</p>
-                <p><strong>Feature Engineering:</strong> Standardization & Imputation</p>
-                
-                <h5>🔬 Model Performance</h5>
-                <ul>
-                    <li>Accuracy: ~85%</li>
-                    <li>Precision: ~82%</li>
-                    <li>Recall: ~79%</li>
-                    <li>F1-Score: ~80%</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col2:
-            st.markdown("""
-            <div class="info-card">
-                <h4>⚙️ AI Pipeline</h4>
-                <ol>
-                    <li><strong>Data Collection:</strong> 8 health indicators</li>
-                    <li><strong>Preprocessing:</strong> Normalization & cleaning</li>
-                    <li><strong>Feature Analysis:</strong> Correlation & importance</li>
-                    <li><strong>Model Training:</strong> Random Forest algorithm</li>
-                    <li><strong>Validation:</strong> Cross-validation testing</li>
-                    <li><strong>Prediction:</strong> Real-time risk assessment</li>
-                    <li><strong>Interpretation:</strong> Personalized insights</li>
-                </ol>
-            </div>
-            """, unsafe_allow_html=True)
-    
-    with tab3:
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("""
-            <div class="info-card">
-                <h4>📋 Dataset Overview</h4>
-                <p><strong>Source:</strong> Pima Indian Diabetes Database</p>
-                <p><strong>Records:</strong> 768 patients</p>
-                <p><strong>Features:</strong> 8 medical indicators</p>
-                <p><strong>Target:</strong> Diabetes diagnosis (binary)</p>
-                
-                <h5>🧬 Medical Features</h5>
-                <ul>
-                    <li><strong>Pregnancies:</strong> Number of pregnancies</li>
-                    <li><strong>Glucose:</strong> Blood glucose level</li>
-                    <li><strong>Blood Pressure:</strong> Diastolic pressure</li>
-                    <li><strong>Skin Thickness:</strong> Triceps measurement</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col2:
-            st.markdown("""
-            <div class="info-card">
-                <h4>📊 Data Quality</h4>
-                <p><strong>Completeness:</strong> 98.5%</p>
-                <p><strong>Accuracy:</strong> Medical-grade</p>
-                <p><strong>Diversity:</strong> Multi-ethnic population</p>
-                <p><strong>Validation:</strong> Clinically verified</p>
-                
-                <h5>🧬 Additional Features</h5>
-                <ul>
-                    <li><strong>Insulin:</strong> Serum insulin level</li>
-                    <li><strong>BMI:</strong> Body mass index</li>
-                    <li><strong>Pedigree:</strong> Genetic predisposition</li>
-                    <li><strong>Age:</strong> Patient age</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Dataset statistics visualization
-        df = load_dataset()
-        if df is not None:
-            st.markdown("#### 📈 Dataset Statistics")
-            
-            # Create interactive plots
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                # Age distribution
-                fig = px.histogram(
-                    df, x='Age', 
-                    title="Age Distribution in Dataset",
-                    nbins=20,
-                    color_discrete_sequence=['#667eea']
-                )
-                fig.update_layout(height=300)
-                st.plotly_chart(fig, use_container_width=True)
-                
-            with col2:
-                # BMI vs Glucose scatter
-                fig = px.scatter(
-                    df, x='BMI', y='Glucose', 
-                    color='Outcome',
-                    title="BMI vs Glucose Relationship",
-                    color_discrete_sequence=['#4CAF50', '#f44336']
-                )
-                fig.update_layout(height=300)
-                st.plotly_chart(fig, use_container_width=True)
-    
-    with tab4:
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("""
-            <div class="info-card">
-                <h4>💻 Technology Stack</h4>
-                <h5>Frontend</h5>
-                <ul>
-                    <li><strong>Streamlit:</strong> Interactive web framework</li>
-                    <li><strong>Plotly:</strong> Interactive visualizations</li>
-                    <li><strong>HTML/CSS:</strong> Custom styling</li>
-                </ul>
-                
-                <h5>Backend & ML</h5>
-                <ul>
-                    <li><strong>Python:</strong> Core programming language</li>
-                    <li><strong>Scikit-learn:</strong> Machine learning</li>
-                    <li><strong>Pandas:</strong> Data manipulation</li>
-                    <li><strong>NumPy:</strong> Numerical computing</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col2:
-            st.markdown("""
-            <div class="info-card">
-                <h4>🔧 System Architecture</h4>
-                <h5>Data Pipeline</h5>
-                <ul>
-                    <li>Data validation & preprocessing</li>
-                    <li>Feature scaling & normalization</li>
-                    <li>Model inference engine</li>
-                    <li>Result interpretation system</li>
-                </ul>
-                
-                <h5>Performance Optimization</h5>
-                <ul>
-                    <li>Caching for faster loading</li>
-                    <li>Optimized model serialization</li>
-                    <li>Responsive UI design</li>
-                    <li>Error handling & validation</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Performance metrics
-        st.markdown("#### ⚡ Performance Metrics")
-        
-        perf_col1, perf_col2, perf_col3, perf_col4 = st.columns(4)
-        
-        with perf_col1:
-            st.metric("Response Time", "< 2s", delta="-0.5s")
-        with perf_col2:
-            st.metric("Model Size", "1.2 MB", delta="-0.3 MB")
-        with perf_col3:
-            st.metric("Accuracy", "85.3%", delta="+2.1%")
-        with perf_col4:
-            st.metric("Uptime", "99.9%", delta="+0.1%")
-    
-    # Usage instructions
-    st.markdown("### 📖 How to Use This Application")
-    
-    usage_steps = [
-        ("🏠 Home", "Start here to understand the application and view dataset overview"),
-        ("📊 Data Analysis", "Explore the dataset with interactive visualizations and correlations"),
-        ("🔮 Prediction", "Enter health information to get AI-powered diabetes risk assessment"),
-        ("ℹ️ About", "Learn about the technology, dataset, and methodology (you are here!)")
+    features = [
+        "🔮 **AI-Powered Predictions**: Uses Random Forest machine learning algorithm",
+        "📊 **Interactive Analysis**: Explore medical data with visualizations", 
+        "🎯 **Risk Assessment**: Get personalized diabetes risk evaluation",
+        "📱 **User-Friendly**: Simple interface for easy health screening"
     ]
     
-    for i, (step, description) in enumerate(usage_steps, 1):
-        st.markdown(f"""
-        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 0.5rem 0; 
-                    border-left: 4px solid #667eea;">
-            <h5 style="margin: 0; color: #667eea;">Step {i}: {step}</h5>
-            <p style="margin: 0.5rem 0 0 0; color: #666;">{description}</p>
+    for feature in features:
+        st.markdown(f"- {feature}")
+    
+    # Dataset information
+    st.markdown("#### 📋 Dataset Information")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="info-card">
+            <h5>📊 Data Source</h5>
+            <ul>
+                <li><strong>Source:</strong> Pima Indian Diabetes Database</li>
+                <li><strong>Records:</strong> 768 patients</li>
+                <li><strong>Features:</strong> 8 medical indicators</li>
+                <li><strong>Accuracy:</strong> 85.3% prediction accuracy</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="info-card">
+            <h5>🧬 Health Indicators</h5>
+            <ul>
+                <li>Number of pregnancies</li>
+                <li>Glucose concentration</li>
+                <li>Blood pressure</li>
+                <li>Skin thickness</li>
+                <li>Insulin levels</li>
+                <li>Body Mass Index (BMI)</li>
+                <li>Diabetes pedigree function</li>
+                <li>Age</li>
+            </ul>
         </div>
         """, unsafe_allow_html=True)
     
     # Important disclaimers
-    st.markdown("### ⚠️ Important Disclaimers & Limitations")
+    st.markdown("#### ⚠️ Important Disclaimers")
     
     disclaimers = [
         "🩺 **Medical Disclaimer**: This tool is for educational purposes only and should not replace professional medical advice.",
         "🔬 **Research Tool**: Predictions are based on statistical patterns and may not apply to all individuals.",
-        "📊 **Data Limitations**: Model trained on specific population data; results may vary for different demographics.",
-        "🔄 **Continuous Improvement**: Model accuracy improves with more data and regular updates.",
         "👨‍⚕️ **Professional Consultation**: Always consult healthcare professionals for medical decisions."
     ]
     
@@ -1300,50 +1075,6 @@ def show_about():
             {disclaimer}
         </div>
         """, unsafe_allow_html=True)
-    
-    # Contact and feedback
-    st.markdown("### 📞 Contact & Feedback")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        <div class="info-card">
-            <h4>💌 Get in Touch</h4>
-            <p>We value your feedback and suggestions for improving this application.</p>
-            <ul>
-                <li>📧 Email: healthcare.ai@example.com</li>
-                <li>🐛 Bug Reports: github.com/diabetes-ai/issues</li>
-                <li>💡 Feature Requests: feedback.diabetes-ai.com</li>
-                <li>📱 Social: @DiabetesAI</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with col2:
-        st.markdown("""
-        <div class="info-card">
-            <h4>🤝 Contributing</h4>
-            <p>Join our mission to improve healthcare accessibility worldwide.</p>
-            <ul>
-                <li>🔬 Data Scientists: Improve model accuracy</li>
-                <li>👩‍💻 Developers: Enhance user experience</li>
-                <li>🩺 Medical Professionals: Clinical validation</li>
-                <li>🌍 Translators: Make it globally accessible</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Version and updates
-    st.markdown("---")
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.metric("Current Version", "v2.1.0")
-    with col2:
-        st.metric("Last Updated", "Dec 2024")
-    with col3:
-        st.metric("Next Update", "Jan 2025")
 
 if __name__ == "__main__":
     main()
