@@ -78,11 +78,20 @@ TEXTS = {
         "recommendations": "💡 Recommendations",
         "feature_analysis": "📊 Feature Analysis",
         "about_title": "ℹ️ About This Application",
-        "about_description": "This diabetes prediction application uses advanced machine learning algorithms to assess diabetes risk based on various health indicators.",
-        "features_title": "✨ Key Features",
+        "about_description": "This diabetes prediction application uses advanced machine learning algorithms to assess diabetes risk based on various health indicators.",        "features_title": "✨ Key Features",
         "model_details": "🤖 Model Details",
         "disclaimer": "⚠️ Medical Disclaimer",
-        "disclaimer_text": "This tool is for educational and informational purposes only. It should not replace professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare providers for medical decisions."
+        "disclaimer_text": "This tool is for educational and informational purposes only. It should not replace professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare providers for medical decisions.",
+        "key_risk_factors": "🔍 Key Risk Factors for Your Profile",
+        "your_value": "Your Value",
+        "importance": "Importance",
+        "medical_disclaimer_full": "**⚠️ Important Medical Disclaimer**: This prediction tool is for educational purposes only and should not replace professional medical advice. Always consult with a qualified healthcare provider for proper medical evaluation and treatment decisions.",
+        "new_analysis": "🔄 New Analysis",
+        "important_disclaimers": "⚠️ Important Disclaimers",
+        "medical_disclaimer_short": "🩺 **Medical Disclaimer**: This tool is for educational purposes only and should not replace professional medical advice.",
+        "research_tool": "🔬 **Research Tool**: Predictions are based on statistical patterns and may not apply to all individuals.",
+        "professional_consultation": "👨‍⚕️ **Professional Consultation**: Always consult healthcare professionals for medical decisions.",
+        "risk_category": "Risk Category"
     },
     "id": {
         "app_title": "🩺 Sistem Prediksi Diabetes Canggih",
@@ -144,11 +153,20 @@ TEXTS = {
         "recommendations": "💡 Rekomendasi",
         "feature_analysis": "📊 Analisis Fitur",
         "about_title": "ℹ️ Tentang Aplikasi Ini",
-        "about_description": "Aplikasi prediksi diabetes ini menggunakan algoritma machine learning canggih untuk menilai risiko diabetes berdasarkan berbagai indikator kesehatan.",
-        "features_title": "✨ Fitur Utama",
+        "about_description": "Aplikasi prediksi diabetes ini menggunakan algoritma machine learning canggih untuk menilai risiko diabetes berdasarkan berbagai indikator kesehatan.",        "features_title": "✨ Fitur Utama",
         "model_details": "🤖 Detail Model",
         "disclaimer": "⚠️ Penafian Medis",
-        "disclaimer_text": "Alat ini hanya untuk tujuan edukasi dan informasi. Tidak boleh menggantikan nasihat medis profesional, diagnosis, atau pengobatan. Selalu konsultasikan dengan penyedia layanan kesehatan yang berkualitas untuk keputusan medis."
+        "disclaimer_text": "Alat ini hanya untuk tujuan edukasi dan informasi. Tidak boleh menggantikan nasihat medis profesional, diagnosis, atau pengobatan. Selalu konsultasikan dengan penyedia layanan kesehatan yang berkualitas untuk keputusan medis.",
+        "key_risk_factors": "🔍 Faktor Risiko Utama untuk Profil Anda",
+        "your_value": "Nilai Anda",
+        "importance": "Tingkat Penting",
+        "medical_disclaimer_full": "**⚠️ Penafian Medis Penting**: Alat prediksi ini hanya untuk tujuan edukasi dan tidak boleh menggantikan nasihat medis profesional. Selalu konsultasikan dengan penyedia layanan kesehatan yang berkualitas untuk evaluasi medis dan keputusan pengobatan yang tepat.",
+        "new_analysis": "🔄 Analisis Baru",
+        "important_disclaimers": "⚠️ Penafian Penting",
+        "medical_disclaimer_short": "🩺 **Penafian Medis**: Alat ini hanya untuk tujuan edukasi dan tidak boleh menggantikan nasihat medis profesional.",
+        "research_tool": "🔬 **Alat Penelitian**: Prediksi berdasarkan pola statistik dan mungkin tidak berlaku untuk semua individu.",
+        "professional_consultation": "👨‍⚕️ **Konsultasi Profesional**: Selalu konsultasikan dengan profesional kesehatan untuk keputusan medis.",
+        "risk_category": "Kategori Risiko"
     }
 }
 
@@ -1136,15 +1154,13 @@ def show_prediction(lang="en"):
                     category = "High Risk"
                     category_color = "#f44336"
                 
-                st.markdown(f"""
-                <div style="background: {category_color}; color: white; padding: 1rem; 
+                st.markdown(f"""                <div style="background: {category_color}; color: white; padding: 1rem; 
                            border-radius: 10px; text-align: center; margin-top: 1rem;">
-                    <h4 style="margin: 0;">Risk Category: {category}</h4>
+                    <h4 style="margin: 0;">{get_text('risk_category', lang)}: {category}</h4>
                 </div>
                 """, unsafe_allow_html=True)
-            
-            # Feature importance for this prediction
-            st.markdown("#### 🔍 Key Risk Factors for Your Profile")
+              # Feature importance for this prediction
+            st.markdown(f"#### {get_text('key_risk_factors', lang)}")
             
             feature_names = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 
                            'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
@@ -1166,53 +1182,16 @@ def show_prediction(lang="en"):
                                     border-left: 4px solid {'#f44336' if importance > 0.15 else '#ff9800' if importance > 0.1 else '#4CAF50'};">
                             <h6 style="margin: 0; color: #333;">{feature}</h6>
                             <p style="margin: 0.3rem 0 0 0; color: #666;">
-                                Your Value: {value:.1f} | Importance: {importance:.1%}
+                                {get_text('your_value', lang)}: {value:.1f} | {get_text('importance', lang)}: {importance:.1%}
                             </p>
                         </div>
                         """, unsafe_allow_html=True)
             
             # Personalized recommendations
-            st.markdown("#### 💡 Personalized Recommendations")
-            
-            recommendations = []
-            
-            if glucose > 126:
-                recommendations.append("🍎 **Glucose Management**: Your glucose level is elevated. Consider reducing sugar intake and monitoring blood sugar regularly.")
-            elif glucose > 100:
-                recommendations.append("🍎 **Glucose Monitoring**: Your glucose is in the pre-diabetic range. Regular monitoring recommended.")
-            
-            if bmi > 30:
-                recommendations.append("🏃‍♀️ **Weight Management**: Focus on weight reduction through diet and exercise to reduce diabetes risk.")
-            elif bmi > 25:
-                recommendations.append("🏃‍♀️ **Healthy Weight**: Maintain current weight through balanced nutrition and regular exercise.")
-            
-            if blood_pressure > 90:
-                recommendations.append("❤️ **Blood Pressure**: Monitor blood pressure regularly and consider lifestyle modifications.")
-            
-            if age > 45:
-                recommendations.append("🩺 **Regular Checkups**: Age is a risk factor. Schedule regular health screenings.")
-            
-            if not recommendations:
-                recommendations.append("✅ **Great Health Profile**: Continue your current healthy lifestyle practices!")
-            
-            for rec in recommendations:
-                st.markdown(f"""
-                <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin: 0.5rem 0; 
-                           border-left: 4px solid #2196f3;">
-                    {rec}
-                </div>
-                """, unsafe_allow_html=True)
-              # Medical disclaimer
-            st.markdown("---")
-            st.error("""
-            **⚠️ Important Medical Disclaimer**: This prediction tool is for educational purposes only and should not replace professional medical advice. 
-            Always consult with a qualified healthcare provider for proper medical evaluation and treatment decisions.
-            """)
-            
-            # Action button
+                    # Action button
             col1, col2, col3 = st.columns(3)
             with col2:  # Center the button
-                if st.button("🔄 New Analysis", use_container_width=True):
+                if st.button(get_text('new_analysis', lang), use_container_width=True):
                     st.experimental_rerun()
 
 def show_about(lang="en"):
@@ -1393,16 +1372,22 @@ def show_about(lang="en"):
     
     for info in tech_info:
         st.markdown(f"- {info}")
-    
-    # Important disclaimers
+      # Important disclaimers
     st.markdown("---")
-    st.markdown("#### ⚠️ Important Disclaimers")
+    st.markdown(f"#### {get_text('important_disclaimers', lang)}")
     
-    disclaimers = [
-        "🩺 **Medical Disclaimer**: This tool is for educational purposes only and should not replace professional medical advice.",
-        "🔬 **Research Tool**: Predictions are based on statistical patterns and may not apply to all individuals.",
-        "👨‍⚕️ **Professional Consultation**: Always consult healthcare professionals for medical decisions."
-    ]
+    if lang == "en":
+        disclaimers = [
+            get_text('medical_disclaimer_short', lang),
+            get_text('research_tool', lang),
+            get_text('professional_consultation', lang)
+        ]
+    else:
+        disclaimers = [
+            get_text('medical_disclaimer_short', lang),
+            get_text('research_tool', lang),
+            get_text('professional_consultation', lang)
+        ]
     
     for disclaimer in disclaimers:
         st.markdown(f"""
